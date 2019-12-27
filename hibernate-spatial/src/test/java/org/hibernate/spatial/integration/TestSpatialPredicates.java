@@ -14,12 +14,13 @@ import org.hibernate.Transaction;
 import org.hibernate.spatial.HSMessageLogger;
 import org.hibernate.spatial.SpatialFunction;
 import org.hibernate.spatial.dialect.hana.HANASpatialDialect;
+import org.hibernate.spatial.dialect.postgis.PostgisDialect;
 import org.hibernate.spatial.integration.jts.JtsGeomEntity;
 import org.hibernate.spatial.predicate.SpatialPredicates;
-import org.hibernate.spatial.testing.SpatialDialectMatcher;
 import org.hibernate.spatial.testing.SpatialFunctionalTestCase;
 
-import org.hibernate.testing.Skip;
+import org.hibernate.testing.RequiresDialect;
+import org.hibernate.testing.RequiresDialects;
 import org.hibernate.testing.SkipForDialect;
 import org.junit.Test;
 
@@ -31,7 +32,14 @@ import static org.junit.Assert.fail;
 /**
  * @see TestSpatialRestrictions
  */
-@Skip(condition = SpatialDialectMatcher.class, message = "No Spatial Dialect")
+@RequiresDialects( {
+		@RequiresDialect(PostgisDialect.class),
+} )
+/*@RequiresDialectFeature(
+		value = SpatialDialectCheck.class,
+		comment = "db/dialect is not a spatial dialect"
+)*/
+//@Skip(condition = SpatialDialectMatcher.class, message = "No Spatial Dialect")
 @SkipForDialect(value = HANASpatialDialect.class, comment = "The HANA dialect is tested via org.hibernate.spatial.dialect.hana.TestHANASpatialFunctions", jiraKey = "HHH-12426")
 public class TestSpatialPredicates extends SpatialFunctionalTestCase {
 
